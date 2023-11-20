@@ -1,4 +1,4 @@
-package com.example.mi_to_app
+package asano_app.mi_to_app
 
 import io.flutter.embedding.android.FlutterActivity
 

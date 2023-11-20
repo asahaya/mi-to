@@ -89,11 +89,11 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
+            VALUE "CompanyName", "asano_app" "\0"
             VALUE "FileDescription", "mi_to_app" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "mi_to_app" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2023 asano_app. All rights reserved." "\0"
             VALUE "OriginalFilename", "mi_to_app.exe" "\0"
             VALUE "ProductName", "mi_to_app" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"

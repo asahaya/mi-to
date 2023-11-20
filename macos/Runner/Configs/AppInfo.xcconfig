@@ -8,7 +8,7 @@
 PRODUCT_NAME = mi_to_app
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.miToApp
+PRODUCT_BUNDLE_IDENTIFIER = asano_app.miToApp
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2023 com.example. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2023 asano_app. All rights reserved.
