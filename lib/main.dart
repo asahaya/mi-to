@@ -1,12 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
-
 import 'package:flutter/material.dart';
 
 import '03_start_screen.dart';
 import 'firebase_options.dart';
 
-
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -31,7 +29,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // home: UserInformation(),
-      home:const StartScreen(),
+      home: const StartScreen(),
     );
   }
 }
