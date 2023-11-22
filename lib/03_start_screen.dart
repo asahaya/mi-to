@@ -108,18 +108,18 @@ class StartScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            ElevatedButton(
-                                onPressed: () async {
-                                  UserCredential? userCredential =
-                                      await handleSignIn();
-                                  if (userCredential != null) {
-                                    print(
-                                        'Successfully signed in: ${userCredential.user!.displayName}');
-                                  } else {
-                                    print('Sign in failed.');
-                                  }
-                                },
-                                child: Text('s')),
+                            // ElevatedButton(
+                            //     onPressed: () async {
+                            //       UserCredential? userCredential =
+                            //           await handleSignIn();
+                            //       if (userCredential != null) {
+                            //         print(
+                            //             'Successfully signed in: ${userCredential.user!.displayName}');
+                            //       } else {
+                            //         print('Sign in failed.');
+                            //       }
+                            //     },
+                            //     child: Text('s')),
                           ],
                         ),
                       ),
