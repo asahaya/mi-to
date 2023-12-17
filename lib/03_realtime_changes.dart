@@ -40,6 +40,7 @@ class _UserInformationState extends State<UserInformation>
     with SingleTickerProviderStateMixin {
   final TextEditingController _fullNameCon = TextEditingController();
   final TextEditingController _comCon = TextEditingController();
+  final loginUserData = FirebaseAuth.instance.currentUser!;
 
   final CollectionReference _users =
       FirebaseFirestore.instance.collection('users');
@@ -76,7 +77,6 @@ class _UserInformationState extends State<UserInformation>
 
   @override
   void dispose() {
-    _tabCon!.dispose();
     super.dispose();
   }
 
@@ -402,8 +402,10 @@ class _UserInformationState extends State<UserInformation>
                                   'textYoubiList': textYoubiList,
                                   'startTime': shiteiTime,
                                   're_startTime': reHour + reMinute,
-                                  'priorityLevel': _sliderValue,
-                                  'uid': FirebaseAuth.instance.currentUser!.uid,
+                                  'priorityLevel': (_sliderValue).toDouble(),
+                                  // 'priorityLevel': (_sliderValue),
+                                  'uid':
+                                      FirebaseAuth.instance.currentUser!.email,
                                 });
                                 _sliderValue = 3;
                                 ScaffoldMessenger.of(cxt).showSnackBar(SnackBar(
@@ -430,9 +432,11 @@ class _UserInformationState extends State<UserInformation>
                                   'youbi': youbi,
                                   'textYoubiList': textYoubiList,
                                   'startTime': shiteiTime,
-                                  'priorityLevel': _sliderValue,
+                                  'priorityLevel': (_sliderValue).toDouble(),
+                                  //((json['price'] as num) ?? 0.0).todouble(),
                                   're_startTime': reHour + reMinute,
-                                  'uid': FirebaseAuth.instance.currentUser!.uid,
+                                  'uid':
+                                      FirebaseAuth.instance.currentUser!.email,
                                 });
                                 ScaffoldMessenger.of(cxt).showSnackBar(SnackBar(
                                   backgroundColor: Colors.blueAccent,
@@ -559,21 +563,19 @@ class _UserInformationState extends State<UserInformation>
                   Expanded(child: seven_list_method(streamSAT, 'sat')),
                 ],
               ),
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: FractionalOffset.topLeft,
-                      end: FractionalOffset.bottomRight,
-                      colors: [
-                        const Color(0xffe4a972).withOpacity(1.0),
-                        Color.fromARGB(255, 41, 144, 162).withOpacity(1.0),
-                      ],
-                      stops: const [
-                        0.0,
-                        1.0,
-                      ],
-                    ),
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: FractionalOffset.topLeft,
+                    end: FractionalOffset.bottomRight,
+                    colors: [
+                      const Color(0xffe4a972).withOpacity(1.0),
+                      Color.fromARGB(255, 41, 144, 162).withOpacity(1.0),
+                    ],
+                    stops: const [
+                      0.0,
+                      1.0,
+                    ],
                   ),
                 ),
               ),
@@ -595,10 +597,16 @@ class _UserInformationState extends State<UserInformation>
                   ),
                 ],
               ),
+              // Align(
+              //   alignment: Alignment.bottomRight,
+              //   child: SizedBox(
+              //       height: 120,
+              //       child:
+              //           ButtonDesign(onTap: _add_or_update, text: '番組を追加する')),
+              // )
             ],
           ),
           // );
-
           floatingActionButton: FloatingActionButton.extended(
             icon: Icon(Icons.plus_one),
             label: Text('番組を追加する'),
@@ -701,148 +709,165 @@ class _UserInformationState extends State<UserInformation>
                       }
 
                       // }
-                      return Slidable(
-                        endActionPane: ActionPane(
-                          motion: const DrawerMotion(),
-                          children: [
-                            SlidableAction(
-                              autoClose: true,
-                              onPressed: (context) =>
-                                  _add_or_update(documentSnapshot),
-                              backgroundColor: const Color(0xFF21B7CA),
-                              foregroundColor: Colors.white,
-                              icon: Icons.edit,
-                              label: 'edit',
-                            ),
-                            SlidableAction(
-                              autoClose: true,
-                              onPressed: (context) =>
-                                  _deleteProduct(documentSnapshot.id),
-                              backgroundColor: const Color(0xFF000000),
-                              foregroundColor: Colors.white,
-                              icon: Icons.delete_forever_sharp,
-                              label: 'delete',
-                            ),
-                          ],
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 15, right: 15, top: 3, bottom: 10),
-                          // padding: const EdgeInsets.all(8),
-                          child: Container(
-                            height: 65,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    Colors.white,
-                                    Colors.white24
-                                    // Colors.yellow
-                                  ]),
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.9),
-                                  spreadRadius: 2,
-                                  blurRadius: 4,
-                                  offset: Offset(0, 6),
-                                ),
-                              ],
-                            ),
-                            child: SizedBox(
-                              width: 200,
-                              child: Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 5, bottom: 5, left: 10, right: 10),
-                                    child: SizedBox(
-                                      height: 50,
-                                      width: 10,
-                                      child: Stack(
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                                color: sliderColorSwitch(
-                                                    documentSnapshot[
-                                                        'priorityLevel']),
-                                                borderRadius:
-                                                    BorderRadius.circular(30)),
-                                          ),
-                                          Center(
-                                            child: Align(
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                ((documentSnapshot[
-                                                            'priorityLevel'])
-                                                        .toInt())
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    fontSize: 10,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontFamily: 'bananaS'),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 65,
-                                    child: Text(
-                                      // DateFormat('HH:mm').format(
-                                      dtdt.substring(0, 2) +
-                                          ":" +
-                                          dtdt.substring(2, 4)
-                                      // )
-                                      ,
-                                      style: TextStyle(
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.bold,
-                                        // fontFamily: 'bananaS'
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                      width: 50,
-                                      child: Center(
-                                        child: Text(
-                                          heijitsu
-                                              ? "平日"
-                                              : displayYoubi.join(""),
-                                          style: TextStyle(fontSize: 12),
-                                        ),
-                                      )),
-                                  Expanded(
-                                    flex: 10,
-                                    child: SizedBox(
-                                      width: 200,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            documentSnapshot['full_name'],
-                                            style: TextStyle(fontSize: 20),
-                                          ),
-                                          documentSnapshot['company'] == ""
-                                              ? SizedBox(
-                                                  height: 0, child: Text(""))
-                                              : Text(
-                                                  documentSnapshot['company'],
-                                                  style:
-                                                      TextStyle(fontSize: 10),
-                                                ),
-                                        ],
-                                      ),
-                                    ),
+                      return Container(
+                        child: Slidable(
+                          endActionPane: ActionPane(
+                            motion: const DrawerMotion(),
+                            children: [
+                              SlidableAction(
+                                autoClose: true,
+                                onPressed: (context) =>
+                                    _add_or_update(documentSnapshot),
+                                backgroundColor: const Color(0xFF21B7CA),
+                                foregroundColor: Colors.white,
+                                icon: Icons.edit,
+                                label: 'edit',
+                              ),
+                              SlidableAction(
+                                autoClose: true,
+                                onPressed: (context) =>
+                                    _deleteProduct(documentSnapshot.id),
+                                backgroundColor: const Color(0xFF000000),
+                                foregroundColor: Colors.white,
+                                icon: Icons.delete_forever_sharp,
+                                label: 'delete',
+                              ),
+                            ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 10, right: 10, top: 3, bottom: 10),
+                            // padding: const EdgeInsets.all(8),
+                            child: Container(
+                              height: 60,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      Colors.white,
+                                      Colors.white24
+                                      // Colors.yellow
+                                    ]),
+                                borderRadius: BorderRadius.circular(40),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.9),
+                                    spreadRadius: 2,
+                                    blurRadius: 4,
+                                    offset: Offset(0, 6),
                                   ),
                                 ],
+                              ),
+                              child: SizedBox(
+                                width: 200,
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 5,
+                                          bottom: 5,
+                                          left: 10,
+                                          right: 10),
+                                      child: SizedBox(
+                                        height: 20,
+                                        width: 20,
+                                        child: Stack(
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.grey
+                                                          .withOpacity(0.9),
+                                                      spreadRadius: 2,
+                                                      blurRadius: 4,
+                                                      offset: Offset(0, 4),
+                                                    ),
+                                                  ],
+                                                  color: sliderColorSwitch(
+                                                      documentSnapshot[
+                                                          'priorityLevel']),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          30)),
+                                            ),
+                                            Center(
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  ((documentSnapshot[
+                                                              'priorityLevel'])
+                                                          .toInt())
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontFamily: 'bananaS'),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 65,
+                                      child: Text(
+                                        // DateFormat('HH:mm').format(
+                                        dtdt.substring(0, 2) +
+                                            ":" +
+                                            dtdt.substring(2, 4)
+                                        // )
+                                        ,
+                                        style: TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold,
+                                          // fontFamily: 'bananaS'
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                        width: 25,
+                                        child: Center(
+                                          child: Text(
+                                            heijitsu
+                                                ? "平日"
+                                                : displayYoubi.join(""),
+                                            style: TextStyle(fontSize: 10),
+                                          ),
+                                        )),
+                                    SizedBox(width: 10),
+                                    Expanded(
+                                      flex: 10,
+                                      child: SizedBox(
+                                        width: 200,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              documentSnapshot['full_name'],
+                                              style: TextStyle(fontSize: 18),
+                                            ),
+                                            documentSnapshot['company'] == ""
+                                                ? SizedBox(
+                                                    height: 0, child: Text(""))
+                                                : Text(
+                                                    documentSnapshot['company'],
+                                                    style:
+                                                        TextStyle(fontSize: 10),
+                                                  ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
